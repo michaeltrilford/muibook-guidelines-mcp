@@ -8,7 +8,7 @@ const {
   GetPromptRequestSchema,
 } = require("@modelcontextprotocol/sdk/types.js");
 const { transformNode } = require("./transform.js");
-const { prompts } = require("./prompts.js");
+const { guidelines } = require("./guidelines");
 
 const server = new Server(
   {
@@ -25,41 +25,41 @@ const server = new Server(
 
 // List available prompts
 server.setRequestHandler(ListPromptsRequestSchema, async () => {
-  return {
-    prompts: [
-      {
-        name: "button-guidelines",
-        description: "Guidelines for Button component - actions and interactions",
-      },
-      {
-        name: "dialog-guidelines",
-        description: "Guidelines for Dialog component - modal windows and overlays",
-      },
-      {
-        name: "all-components",
-        description: "All design system component guidelines",
-      },
-    ],
-  };
+  const prompts = guidelines.map((guideline) => ({
+    name: guideline.name,
+    description: guideline.description,
+  }));
+
+  // Add the "all-components" prompt
+  prompts.push({
+    name: "all-components",
+    description: "All design system component guidelines",
+  });
+
+  return { prompts };
 });
 
 // Get prompt content
 server.setRequestHandler(GetPromptRequestSchema, async (request) => {
-  const promptMap = {
-    "button-guidelines": 0,
-    "dialog-guidelines": 1,
-  };
-
   if (request.params.name === "all-components") {
     return {
-      messages: prompts,
+      messages: guidelines.map((guideline) => ({
+        role: "system",
+        content: guideline.content,
+      })),
     };
   }
 
-  const index = promptMap[request.params.name];
-  if (index !== undefined) {
+  const guideline = guidelines.find((g) => g.name === request.params.name);
+
+  if (guideline) {
     return {
-      messages: [prompts[index]],
+      messages: [
+        {
+          role: "system",
+          content: guideline.content,
+        },
+      ],
     };
   }
 
