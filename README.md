@@ -187,3 +187,133 @@ For issues or questions:
 - Open an issue on GitHub
 - Check the troubleshooting section above
 - Contact the design system team
+
+---
+
+# NPM Package
+
+## Versioning
+
+- Follow **semantic versioning**: `major.minor.patch`
+  - **Patch**: bug fixes, no API changes
+  - **Minor**: new features, backward-compatible
+  - **Major**: breaking changes, API changes
+- Keep `package.json` and `server.json` versions synchronized.
+
+## Bumping Versions
+
+Patch:
+
+```bash
+npm version patch
+```
+
+Minor:
+
+```bash
+npm version minor
+```
+
+Major:
+
+```bash
+npm version major
+```
+
+This updates package.json version and creates a Git tag automatically.
+
+## Publishing to NPM
+
+Option A – Direct publish (NPM will prompt for credentials if needed):
+
+```bash
+npm publish --access public
+```
+
+Option B – Pre-login (recommended for repeated releases):
+
+```bash
+npm login
+npm publish --access public
+```
+
+- --access public ensures the package is publicly available.
+- Make sure package.json includes the MCP identifier:
+
+```json
+"mcpName": "io.github.YOURUSERNAME/muibook-guidelines-mcp"
+```
+
+⸻
+
+## Optional MCP Registry Update
+
+Ensure server.json matches the current version:
+
+```json
+"version": "1.0.0"
+```
+
+Publish to MCP Registry:
+
+```bash
+mcp-publisher publish
+```
+
+⸻
+
+## GitHub Release (Optional)
+
+Tag the release:
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+Add release notes in GitHub for tracking changes.
+
+⸻
+
+## Local Development & Testing
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run locally:
+
+```bash
+npm start
+```
+
+Connect via MCP client (Cursor, Cline, etc.) or mcp.json:
+
+```json
+{
+  "servers": {
+    "muibook-guidelines-mcp": {
+      "command": "node",
+      "args": ["./node_modules/muibook-guidelines-mcp/server.js"]
+    }
+  }
+}
+```
+
+## Release Checklist
+
+• Test MCP server locally
+• Update package.json and server.json versions
+• Bump version (patch, minor, or major)
+• Commit and push changes
+• Publish to NPM (--access public)
+• Optionally publish to MCP Registry (mcp-publisher publish)
+• Optionally create GitHub release with notes
+
+## References
+
+• NPM Publishing Docs￼
+• MCP Registry Docs￼
+• Semantic Versioning￼
