@@ -1,0 +1,13 @@
+{
+  "name": "muibook-guidelines",
+  "version": "1.0.0",
+  "description": "Access guidelines for your design system as you build to ensure consistency.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "type": "commonjs",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.22.0"
+  }
+}
