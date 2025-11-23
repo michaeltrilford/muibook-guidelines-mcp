@@ -1,4 +1,4 @@
-const addOn = require("./add-on");
+const addOn = require("./addon");
 const checkbox = require("./checkbox");
 const field = require("./field");
 const fileUpload = require("./file-upload");
